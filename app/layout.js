@@ -1,5 +1,9 @@
+// app/layout.js
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "next-themes"; // Proveyderni import qilamiz
 import "./globals.css";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,11 +22,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning ni qo'shamiz
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#050505] text-white`}
       >
-        {children}
+        {/* Proveyderni o'rab chiqamiz */}
+        <ThemeProvider attribute="class" defaultTheme="dark">
+          <Header />
+          {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
