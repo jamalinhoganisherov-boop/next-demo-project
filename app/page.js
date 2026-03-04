@@ -1,5 +1,6 @@
 "use client"
 import React from 'react'
+import SubscriptionCard from './components/SubscriptionCard'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import GenreBtn from './components/GenreBtn'
@@ -14,6 +15,7 @@ function page() {
       <GenreBtn />
       <Charactors />
       <Studios />
+       <SubscriptionCard />
       
     </div>
   )
