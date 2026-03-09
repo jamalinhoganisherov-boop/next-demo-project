@@ -46,11 +46,11 @@ const Header = () => {
 
   const navItems = [
     { name: 'Home', href: '/' },
-    { name: 'Pricing', href: '/pricing' },
+    { name: 'Pricing', href: '#pricing' },
     { name: 'Movies', href: '/movies' },
     { name: 'Series', href: '/series' },
     { name: 'Collection', href: '/collection' },
-    { name: 'FAQ', href: '/faq' },
+    { name: 'FAQ', href: '#Questions' },
   ];
 
   return (
