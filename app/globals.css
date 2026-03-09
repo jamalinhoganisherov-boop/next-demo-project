@@ -1,11 +1,15 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
-    height: 100vh;
+  height: 100vh;
 }
 
 body {
-    background-color: #030A1B;
+  background-color: #030a1b;
 }
