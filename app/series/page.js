@@ -1,32 +1,35 @@
-﻿import React from "react";
+import React from "react";
 import AdvanceSearch from "../components/AdvanceSearch";
-import MoviesCarousel from "../components/MoviesCarousel";
+import SeriesCarousel from "../components/SeriesCarousel"; // Swap to SeriesCarousel
 import { fetchTrending } from "../../lib/tmdb";
-import { ChevronDown, ChevronRight } from "lucide-react"; // Added missing imports
+import { ChevronDown, ChevronRight } from "lucide-react";
 
-export default async function MoviesPage() {
-  // 1. Fetch data (Server-side)
-  const data = await fetchTrending("movie");
-  const movies = data?.results || [];
+export default async function SeriesPage() {
+  // 1. Fetch TV data (Server-side)
+  const data = await fetchTrending("tv"); 
+  const series = data?.results || [];
 
   return (
     <div className="min-h-screen bg-[#030A1B]">
       {/* 2. Top Section / Search */}
-      <AdvanceSearch />
+      <AdvanceSearch type="tv" />
 
       {/* 3. Main Content Section */}
       <section className="py-10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col gap-8">
-            {/* Example of where those extra buttons/logic you had would go */}
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white">Trending Now</h2>
-              <button className="p-2.5 hover:bg-white/5 rounded-full border border-white/5">
+              <div className="flex flex-col">
+                <h2 className="text-4xl font-bold text-white italic">Series</h2>
+                <p className="text-gray-500 text-sm mt-1">{series.length} results found</p>
+              </div>
+              <button className="p-2.5 hover:bg-white/5 rounded-full border border-white/5 transition-colors">
                 <ChevronRight className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
-            <MoviesCarousel initialMovies={movies} isGrid={true} />
+            {/* Use SeriesCarousel with the Grid prop we set up earlier */}
+            <SeriesCarousel initialSeries={series} isGrid={true} />
           </div>
         </div>
       </section>
@@ -34,15 +37,8 @@ export default async function MoviesPage() {
   );
 }
 
-// 4. Extracted Sub-component (Keep this outside the main function)
-const DropdownSelect = ({
-  label,
-  value,
-  options,
-  isOpen,
-  toggle,
-  onSelect,
-}) => {
+// Keep your DropdownSelect sub-component here if it's not exported elsewhere
+const DropdownSelect = ({ label, value, options, isOpen, toggle, onSelect }) => {
   return (
     <div className="flex items-center gap-4 relative">
       <span className="text-[12px] font-bold text-gray-500 w-14 uppercase tracking-widest">
@@ -59,7 +55,6 @@ const DropdownSelect = ({
           />
         </div>
 
-        {/* Dropdown Menu */}
         {isOpen && (
           <div className="absolute top-full mt-2 w-full bg-[#050E26] border border-blue-500/30 rounded-[20px] py-3 z-50 shadow-2xl max-h-60 overflow-y-auto">
             {options.map((opt) => (
