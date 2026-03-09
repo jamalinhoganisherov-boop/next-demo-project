@@ -8,14 +8,16 @@ import Charactors from './components/Charactors'
 // import Footer from './components/Footer'
 import Studios from './components/Studios'
 
+
 function page() {
   return (
     <div>
       <Hero />
       <GenreBtn />
+      <SubscriptionCard />
       <Charactors />
       <Studios />
-       <SubscriptionCard />
+       
       
     </div>
   )

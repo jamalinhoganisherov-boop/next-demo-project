@@ -21,8 +21,8 @@ const HERO_DATA = [
   },
   {
     id: 2,
-    title: "Oppenheimer",
-    desc: "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.",
+    title: "The Dark Knight Collection",
+    desc: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
     rating: 8.4,
     image: "/herobg-2.svg", // O'zingizdagi rasm yo'li
     platform: "HBO",
@@ -30,8 +30,8 @@ const HERO_DATA = [
   },
   {
     id: 3,
-    title: "Mission: Impossible",
-    desc: "Ethan Hunt and his IMF team must track down a dangerous new weapon that threatens all of humanity.",
+    title: "Spider-man Collection",
+    desc: "With Spider-Man's identity now revealed, Peter asks Doctor Strange for help. When a spell goes wrong, dangerous foes from other worlds start to appear, forcing Peter to discover what it truly means to be Spider-Man.",
     rating: 7.7,
     image: "/herobg-3.svg", // O'zingizdagi rasm yo'li
     platform: "Paramount",
