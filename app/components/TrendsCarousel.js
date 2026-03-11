@@ -1,5 +1,4 @@
 ﻿"use client";
-
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
@@ -9,7 +8,7 @@ import MovieCard from "./MovieCard";
 
 export default function TrendsCarousel({ movies = [] }) {
   return (
-    <section className="px-6 mt-12">
+    <section className="px-6 mt-12  bg-[#030A1B]">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-white">Trends</h2>
         <a href="/movies" className="text-blue-400 hover:text-blue-300">
