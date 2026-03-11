@@ -1,5 +1,4 @@
 ﻿"use client";
-
 import React from "react";
 import Link from "next/link"; // 1. Import Link for navigation
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,7 +9,7 @@ import MovieCard from "./MovieCard";
 
 export default function TrendsCarousel({ movies = [] }) {
   return (
-    <section className="px-6 mt-12">
+    <section className="px-6 mt-12  bg-[#030A1B]">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-white">Trends</h2>
         <Link href="/movies" className="text-blue-400 hover:text-blue-300">
