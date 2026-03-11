@@ -13,7 +13,7 @@ const GenreBtn = ({ genres = [], selectedGenreId, onSelect, containerRef }) => {
   };
 
   return (
-    <section className="bg-[#050505] text-white py-4 px-8 relative">
+    <section className="bg-[#030b1a] text-white py-4 px-8 relative">
       <button
         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-black/30 rounded-full"
         onClick={() => scroll(-200)}

@@ -16,7 +16,7 @@ const studios = [
 
 const Studios = () => {
   return (
-    <section className="bg-[#050505] text-white py-16 px-16">
+    <section className="bg-[#030b1a] text-white py-16 px-16">
       <h2 className="text-4xl font-bold mb-12 text-center">Studios</h2>
       
       {/* Studios Grid */}
