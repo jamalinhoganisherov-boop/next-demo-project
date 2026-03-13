@@ -24,13 +24,13 @@ export default async function page() {
   const trendingActors = personData?.results?.slice(0, 12) || [];
 
   return (
-    <div className="bg-[#030A1B]">
+    <div className="bg-white text-slate-900 dark:bg-[#030A1B] dark:text-white transition-colors duration-300">
       {/* Hero Section */}
       <Hero />
 
       {/* Trending Carousels */}
       <TrendsCarousel movies={movies} />
-      
+
       {/* Movies Section */}
       <MoviesCarousel initialMovies={movies} />
 
@@ -62,7 +62,7 @@ export default async function page() {
 
           <Card title="Premium" duration="12month" price="$35.199" />
 
-          <div className="w-full mt-20">
+          <div id="faq" className="w-full mt-20">
             <Questions />
           </div>
 

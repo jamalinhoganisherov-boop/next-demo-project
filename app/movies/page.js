@@ -1,32 +1,44 @@
-﻿import React from "react";
-import AdvanceSearch from "../components/AdvanceSearch";
-import MoviesCarousel from "../components/MoviesCarousel";
-import { fetchTrending } from "../../lib/tmdb";
-import { ChevronDown, ChevronRight } from "lucide-react"; // Added missing imports
+﻿"use client";
 
-export default async function MoviesPage() {
-  // 1. Fetch data (Server-side)
-  const data = await fetchTrending("movie");
-  const movies = data?.results || [];
+import React, { useEffect, useState } from "react";
+import { AdvanceSearch } from "../components/AdvanceSearch";
+import MoviesCarousel from "../components/MoviesCarousel";
+
+export default function MoviesPage() {
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchInitial() {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/movies");
+        const data = await res.json();
+        setMovies(data.results || []);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchInitial();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#030A1B]">
-      {/* 2. Top Section / Search */}
-      <AdvanceSearch />
+      <AdvanceSearch mode="movie" initialResults={movies} onResults={setMovies} />
 
-      {/* 3. Main Content Section */}
       <section className="py-10">
         <div className="container mx-auto px-4">
           <div className="flex flex-col gap-8">
-            {/* Example of where those extra buttons/logic you had would go */}
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white">Trending Now</h2>
-              <button className="p-2.5 hover:bg-white/5 rounded-full border border-white/5">
-                <ChevronRight className="w-5 h-5 text-gray-500" />
-              </button>
-            </div>
-
-            <MoviesCarousel initialMovies={movies} isGrid={true} />
+            <MoviesCarousel
+              movies={movies}
+              isGrid={true}
+            />
+            {!loading && movies.length === 0 && (
+              <p className="text-center text-gray-300">No movies found for current filters.</p>
+            )}
           </div>
         </div>
       </section>
@@ -34,46 +46,3 @@ export default async function MoviesPage() {
   );
 }
 
-// 4. Extracted Sub-component (Keep this outside the main function)
-const DropdownSelect = ({
-  label,
-  value,
-  options,
-  isOpen,
-  toggle,
-  onSelect,
-}) => {
-  return (
-    <div className="flex items-center gap-4 relative">
-      <span className="text-[12px] font-bold text-gray-500 w-14 uppercase tracking-widest">
-        {label}
-      </span>
-      <div className="relative flex-grow">
-        <div
-          onClick={toggle}
-          className="flex items-center justify-between bg-[#030A1B]/40 border border-blue-500/20 rounded-[20px] px-6 py-3.5 cursor-pointer hover:border-blue-500/40 transition-all"
-        >
-          <span className="text-[14px] text-gray-400 font-medium">{value}</span>
-          <ChevronDown
-            className={`w-4 h-4 text-blue-500/50 transition-transform ${isOpen ? "rotate-180" : ""}`}
-          />
-        </div>
-
-        {/* Dropdown Menu */}
-        {isOpen && (
-          <div className="absolute top-full mt-2 w-full bg-[#050E26] border border-blue-500/30 rounded-[20px] py-3 z-50 shadow-2xl max-h-60 overflow-y-auto">
-            {options.map((opt) => (
-              <div
-                key={opt}
-                onClick={() => onSelect(opt)}
-                className="px-6 py-2 hover:bg-blue-500/20 text-sm text-gray-300 cursor-pointer transition-colors"
-              >
-                {opt}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};

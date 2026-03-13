@@ -3,6 +3,44 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { getImageUrl } from "@/lib/tmdb"; //
 
+const characters = [
+  {
+    id: 1,
+    name: "Jason Momoa",
+    profile_path: "/actor1.svg",
+  },
+  {
+    id: 2,
+    name: "Dwayne Johnson",
+    profile_path: "/actor2.svg",
+  },
+  {
+    id: 3,
+    name: "Anne Hathaway",
+    profile_path: "/actor3.svg",
+  },
+  {
+    id: 4,
+    name: "Keanu Reeves",
+    profile_path: "/actor4.svg",
+  },
+  {
+    id: 5,
+    name: "Ana armas",
+    profile_path: "/actor5.svg",
+  },
+  {
+    id: 6,
+    name: "Thomas Holland",
+    profile_path: "/actor6.svg",
+  },
+  {
+    id: 7,
+    name: "Emma Watson",
+    profile_path: "/actor7.svg",
+  },
+]
+
 const Charactors = ({ actors = [], directors = [] }) => {
   const [activeTab, setActiveTab] = useState("Actors");
 
@@ -20,11 +58,10 @@ const Charactors = ({ actors = [], directors = [] }) => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${
-                activeTab === tab
+              className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeTab === tab
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
                   : "text-gray-400 hover:text-white"
-              }`}
+                }`}
             >
               {tab}
             </button>
@@ -34,11 +71,11 @@ const Charactors = ({ actors = [], directors = [] }) => {
 
       {/* Characters Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8">
-        {dataToDisplay.map((person, index) => {
+        {characters.map((person, index) => {
           // Fallback logic: If profile_path is null, use the local placeholder
-          const profileImg = person.profile_path
-            ? getImageUrl(person.profile_path)
-            : "/placeholder-actor.png";
+          // const profileImg = person.profile_path
+          //   ? getImageUrl(person.profile_path)
+          //   : "/placeholder-actor.png";
 
           return (
             <div
@@ -47,7 +84,7 @@ const Charactors = ({ actors = [], directors = [] }) => {
             >
               <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-white/10 p-1 group-hover:border-blue-500 transition-all duration-500">
                 <Image
-                  src={profileImg}
+                  src={person.profile_path}
                   alt={person.name}
                   width={128}
                   height={128}
