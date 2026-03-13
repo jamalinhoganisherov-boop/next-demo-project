@@ -1,15 +1,18 @@
+"use client";
+
+import { signIn } from "next-auth/react";
+
 export default function GoogleAuthButton() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#0f172a] p-4">
-        
       <h2 className="text-white text-3xl font-semibold mb-10 tracking-wide">
         Sign in to access your guest area
       </h2>
 
-     
-    {/* <Link > */}
-     <button className="flex items-center justify-center gap-4 bg-transparent border border-gray-500 px-8 py-3 rounded-sm hover:bg-white/5 transition-colors">
-      
+      <button
+        onClick={() => signIn("google", { callbackUrl: "/profile" })}
+        className="flex items-center justify-center gap-4 bg-transparent border border-gray-500 px-8 py-3 rounded-sm hover:bg-white/5 transition-colors"
+      >
         <svg
           width="24"
           height="24"
@@ -34,12 +37,12 @@ export default function GoogleAuthButton() {
           />
         </svg>
 
-        
+
         <span className="text-white text-lg font-medium">
           Continue with Google
         </span>
       </button>
-    {/* </Link> */}
+      {/* </Link> */}
     </div>
   );
 }

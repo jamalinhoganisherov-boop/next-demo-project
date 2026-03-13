@@ -5,26 +5,39 @@ import {
   fetchTVCredits,
   fetchSimilarTV,
   fetchTVImages,
+  fetchTVVideos,
   getImageUrl,
 } from "@/lib/tmdb";
 import Characters from "@/app/components/Charactors";
 import Link from "next/link";
+import TrailerPreview from "@/app/components/TrailerPreview";
 
 export default async function SeriesDetail({ params }) {
   const { id } = await params;
 
   // Fetch all TV data in parallel
-  const [series, credits, similar, images] = await Promise.all([
+  const [series, credits, similar, images, videos] = await Promise.all([
     fetchTV(id),
     fetchTVCredits(id),
     fetchSimilarTV(id),
     fetchTVImages(id),
+    fetchTVVideos(id),
   ]);
+
+  const trailer =
+    videos?.results?.find(
+      (video) =>
+        video.site === "YouTube" &&
+        (video.type === "Trailer" || video.type === "Teaser")
+    ) ||
+    videos?.results?.find((video) => video.site === "YouTube");
+  const trailerKey = trailer?.key || null;
 
   // For TV, Directors are often listed as "Executive Producers" or in "created_by"
   // Here we check both the specific 'created_by' field and the crew list
   const creators = series.created_by || [];
   const actors = credits.cast.slice(0, 12);
+  const watchUrl = `https://www.themoviedb.org/tv/${id}/watch?language=en-US`;
   const screenshots = images.backdrops.slice(0, 5);
   const suggestions = similar.results.slice(0, 5);
 
@@ -68,12 +81,15 @@ export default async function SeriesDetail({ params }) {
                 <IconButton Icon={ThumbsUp} />
                 <IconButton Icon={ThumbsDown} />
               </div>
-              <button className="flex items-center gap-2.5 bg-[#3b82f6] px-8 py-3.5 rounded-xl font-bold text-base hover:bg-blue-600 transition-all shadow-lg shadow-blue-500/30">
-                <Play className="w-5 h-5 fill-white" /> Watch Now
-              </button>
-              <button className="px-8 py-3.5 border border-white/20 rounded-xl font-bold text-base bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all">
-                Preview
-              </button>
+              <a
+                href={watchUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2.5 bg-[#10b981] px-8 py-3.5 rounded-xl font-bold text-base hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/30"
+              >
+                <Play className="w-5 h-5 fill-white" /> Full Series
+              </a>
+              <TrailerPreview trailerKey={trailerKey} title={series.name} />
             </div>
           </div>
 
@@ -123,9 +139,9 @@ export default async function SeriesDetail({ params }) {
 
         {/* 4. DYNAMIC CHARACTERS COMPONENT */}
         {/* We map creators to the 'directors' prop to reuse your component UI */}
-        <Characters 
-          actors={actors} 
-          directors={creators.map(c => ({ ...c, job: "Creator" }))} 
+        <Characters
+          actors={actors}
+          directors={creators.map(c => ({ ...c, job: "Creator" }))}
         />
 
         {/* 5. SUGGESTIONS */}

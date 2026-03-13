@@ -2,6 +2,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes"; // Proveyderni import qilamiz
 import "./globals.css";
+import Providers from "./providers";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -25,13 +26,16 @@ export default function RootLayout({ children }) {
     // suppressHydrationWarning ni qo'shamiz
     <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#050505] text-white`}
       >
         {/* Proveyderni o'rab chiqamiz */}
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <Header />
-          {children}
-          <Footer />
+          <Providers>
+            <Header />
+            {children}
+            <Footer />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

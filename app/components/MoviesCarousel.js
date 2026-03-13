@@ -9,19 +9,25 @@ import "swiper/css/navigation";
 import MovieCard from "./MovieCard";
 import GenreBtn from "./GenreBtn";
 
-export default function MoviesCarousel({ initialMovies = [], isGrid = false }) {
+export default function MoviesCarousel({ movies: externalMovies, initialMovies = [], isGrid = false }) {
   const [movies, setMovies] = useState(initialMovies);
   const [genres, setGenres] = useState([]);
   const [selectedGenreId, setSelectedGenreId] = useState(null);
 
+  const displayMovies = externalMovies && externalMovies.length ? externalMovies : movies;
+
   useEffect(() => {
+    if (externalMovies && externalMovies.length) return;
+
     fetch("/api/genres")
       .then((res) => res.json())
       .then((data) => setGenres(data.genres || []))
       .catch(console.error);
-  }, []);
+  }, [externalMovies]);
 
   useEffect(() => {
+    if (externalMovies && externalMovies.length) return;
+
     const url = selectedGenreId
       ? `/api/movies?genre=${selectedGenreId}`
       : "/api/movies";
@@ -29,7 +35,7 @@ export default function MoviesCarousel({ initialMovies = [], isGrid = false }) {
       .then((res) => res.json())
       .then((data) => setMovies(data.results || []))
       .catch(console.error);
-  }, [selectedGenreId]);
+  }, [selectedGenreId, externalMovies]);
 
   const handleGenreSelect = (id) => {
     setSelectedGenreId((prev) => (prev === id ? null : id));
@@ -39,7 +45,7 @@ export default function MoviesCarousel({ initialMovies = [], isGrid = false }) {
     <section className="w-full px-6 mt-12">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-white italic">Movies</h2>
-        {isGrid && <span className="text-gray-500 text-sm">{movies.length} results</span>}
+        {isGrid && <span className="text-gray-500 text-sm">{displayMovies.length} results</span>}
       </div>
 
       {/* Genre Container with Figma-style styling */}
@@ -54,7 +60,7 @@ export default function MoviesCarousel({ initialMovies = [], isGrid = false }) {
       {isGrid ? (
         /* GRID MODE: Matches Figma layout */
         <div className="flex flex-wrap gap-8 justify-center lg:justify-start">
-          {movies.map((m) => (
+          {displayMovies.map((m) => (
             <Link href={`/movies/${m.id}`} key={m.id} className="w-[200px] transition-transform hover:scale-105">
               <MovieCard movie={m} />
             </Link>
@@ -75,7 +81,7 @@ export default function MoviesCarousel({ initialMovies = [], isGrid = false }) {
             }}
             className="py-4"
           >
-            {movies.map((m) => (
+            {displayMovies.map((m) => (
               <SwiperSlide key={m.id} style={{ width: "200px" }}>
                 <Link href={`/movies/${m.id}`}>
                   <div className="cursor-pointer">
@@ -85,7 +91,7 @@ export default function MoviesCarousel({ initialMovies = [], isGrid = false }) {
               </SwiperSlide>
             ))}
           </Swiper>
-          
+
           <button className="swiper-button-prev-movies absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 bg-black/50 rounded-full text-white">
             &#8592;
           </button>

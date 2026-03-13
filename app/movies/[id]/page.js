@@ -5,26 +5,39 @@ import {
   fetchMovieCredits,
   fetchSimilarMovies,
   fetchMovieImages,
+  fetchMovieVideos,
   getImageUrl,
 } from "@/lib/tmdb";
 import Characters from "@/app/components/Charactors";
 import Link from "next/link";
+import TrailerPreview from "@/app/components/TrailerPreview";
 
 export default async function MovieDetail({ params }) {
   const { id } = await params;
 
-  // Fetch all data in parallel
-  const [movie, credits, similar, images] = await Promise.all([
+  // Fetch all data in parallel including videos for preview
+  const [movie, credits, similar, images, videos] = await Promise.all([
     fetchMovie(id),
     fetchMovieCredits(id),
     fetchSimilarMovies(id),
     fetchMovieImages(id),
+    fetchMovieVideos(id),
   ]);
 
   const directors = credits.crew.filter((person) => person.job === "Director");
   const actors = credits.cast.slice(0, 12);
   const screenshots = images.backdrops.slice(0, 5);
   const suggestions = similar.results.slice(0, 5);
+  const watchUrl = `https://www.themoviedb.org/movie/${id}/watch?language=en-US`;
+
+  const trailer =
+    videos?.results?.find(
+      (video) =>
+        video.site === "YouTube" &&
+        (video.type === "Trailer" || video.type === "Teaser")
+    ) ||
+    videos?.results?.find((video) => video.site === "YouTube");
+  const trailerKey = trailer?.key || null;
 
   return (
     <div className="w-full bg-[#030A1B] text-white font-sans overflow-x-hidden">
@@ -66,12 +79,15 @@ export default async function MovieDetail({ params }) {
                 <IconButton Icon={ThumbsUp} />
                 <IconButton Icon={ThumbsDown} />
               </div>
-              <button className="flex items-center gap-2.5 bg-[#3b82f6] px-8 py-3.5 rounded-xl font-bold text-base hover:bg-blue-600 transition-all shadow-lg shadow-blue-500/30">
-                <Play className="w-5 h-5 fill-white" /> Watch Now
-              </button>
-              <button className="px-8 py-3.5 border border-white/20 rounded-xl font-bold text-base bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all">
-                Preview
-              </button>
+              <a
+                href={watchUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2.5 bg-[#10b981] px-8 py-3.5 rounded-xl font-bold text-base hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-500/30"
+              >
+                <Play className="w-5 h-5 fill-white" /> Full Movie
+              </a>
+              <TrailerPreview trailerKey={trailerKey} title={movie.title} />
             </div>
           </div>
 
